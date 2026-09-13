@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Happy Birthday Faridatul Havida 🎉</title>
+  <!-- Library Animasi Konfeti -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
     :root {
@@ -251,15 +252,17 @@
       cursor: default;
     }
 
-    /* --- STEP FINAL: GALERI & SURAT --- */
+    /* --- STEP FINAL: GALERI & SURAT (DIPERBAIKI) --- */
     .gallery-container {
       display: flex;
       flex-direction: column;
-      gap: 18px;
+      gap: 16px;
       width: 100%;
       max-height: 480px;
       overflow-y: auto;
-      padding-right: 4px;
+      overflow-x: hidden;
+      padding: 4px;
+      box-sizing: border-box;
     }
     .polaroid {
       background: white;
@@ -282,19 +285,22 @@
     }
     .letter-box {
       background: #fffaf6;
-      border: 1px solid #fde7de;
+      border: 1.5px solid #fde7de;
       border-radius: 16px;
-      padding: 18px;
+      padding: 16px 18px;
       text-align: left;
       font-size: 0.92rem;
       line-height: 1.65;
       color: #555;
-      min-height: 120px;
-      white-space: pre-line;
-      box-shadow: inset 0 1px 4px rgba(0,0,0,0.02);
+      width: 100%;
+      box-sizing: border-box;
+      white-space: pre-wrap;    /* Menjaga spasi & enter, otomatis turun baris */
+      word-break: break-word;   /* Mencegah teks keluar bingkai */
+      overflow-wrap: anywhere;
+      margin-bottom: 12px;
     }
 
-    /* --- POPUP / MODAL (DILENGKAPI WRAP & SPACING RAPI) --- */
+    /* --- POPUP / MODAL --- */
     .modal-overlay {
       position: absolute;
       top: 0;
@@ -341,8 +347,6 @@
       font-size: 0.9rem;
       color: #555;
       line-height: 1.6;
-      word-spacing: 0.08rem;
-      letter-spacing: 0.01rem;
       margin-bottom: 16px;
       white-space: normal;
       word-break: normal;
@@ -371,6 +375,7 @@
 
 <div class="phone-container">
 
+  <!-- STEP 1: PIN LOCK (13092002) -->
   <div class="step active" id="step-pin">
     <h2>Unlock Surprise 🔐</h2>
     <p class="subtitle">Masukkan tanggal lahirmu (DDMMYYYY)</p>
@@ -400,6 +405,7 @@
     </div>
   </div>
 
+  <!-- STEP 2: SAMBUTAN -->
   <div class="step" id="step-welcome">
     <img src="https://picsum.photos/300/300?random=11" class="profile-img" alt="Faridatul Havida">
     <h2>Happy Birthday!<br>Faridatul Havida 🎂</h2>
@@ -409,6 +415,7 @@
     <button class="btn" onclick="goToStep('step-l1')">Mulai Permainan 💖</button>
   </div>
 
+  <!-- STEP 3: LEVEL 1 (TANGKAP HATI) -->
   <div class="step" id="step-l1">
     <h2>Level 1: Tangkap Hati</h2>
     <p class="subtitle">Sentuh 5 hati untuk membuka level berikutnya</p>
@@ -418,6 +425,7 @@
     </div>
   </div>
 
+  <!-- STEP 4: LEVEL 2 (MAKANAN KESUKAAN) -->
   <div class="step" id="step-l2">
     <h2>Level 2: Makanan Kesukaan</h2>
     <p class="subtitle">Apa makanan favorit yang paling dia suka?</p>
@@ -429,6 +437,7 @@
     </div>
   </div>
 
+  <!-- STEP 5: LEVEL 3 (MINUMAN KESUKAAN) -->
   <div class="step" id="step-l3">
     <h2>Level 3: Minuman Kesukaan</h2>
     <p class="subtitle">Apa minuman yang paling sering dia pesan?</p>
@@ -440,6 +449,7 @@
     </div>
   </div>
 
+  <!-- STEP 6: LEVEL 4 (NAMA KONTAK DI WA) -->
   <div class="step" id="step-l4">
     <h2>Level 4: Nama Kontak di WA</h2>
     <p class="subtitle">Apa nama kontak dia yang tersimpan di WhatsApp?</p>
@@ -451,6 +461,7 @@
     </div>
   </div>
 
+  <!-- STEP 7: LEVEL 5 (LOVE MEMORY - 12 KOTAK) -->
   <div class="step" id="step-l5">
     <h2>Level 5: Love Memory</h2>
     <p class="subtitle">Temukan pasangan kartu yang cocok</p>
@@ -463,6 +474,7 @@
     <div class="memory-grid" id="memory-grid"></div>
   </div>
 
+  <!-- STEP 8: FINAL STEP (GALERI FOTO & SURAT PENUTUP) -->
   <div class="step" id="step-final">
     <h2>Happy Birthday! 🌸</h2>
     <p class="subtitle">Untuk seseorang yang paling berharga</p>
@@ -482,6 +494,7 @@
     </div>
   </div>
 
+  <!-- POPUP SIFAT (LEVEL 1) -->
   <div class="modal-overlay" id="trait-modal">
     <div class="modal-card">
       <div class="modal-emoji" id="modal-emoji">🌸</div>
@@ -491,6 +504,7 @@
     </div>
   </div>
 
+  <!-- POPUP KEMENANGAN (LEVEL 5) -->
   <div class="modal-overlay" id="win-modal">
     <div class="modal-card">
       <div class="modal-emoji">🎉</div>
@@ -566,7 +580,7 @@
     if (stepId === 'step-final') initFinalStep();
   }
 
-  // --- LEVEL 1: TANGKAP HATI DENGAN POPUP SIFAT BERSPASI ---
+  // --- LEVEL 1: TANGKAP HATI & SIFAT ---
   const traits = [
     {
       emoji: "🥰",
@@ -605,7 +619,7 @@
 
   function spawnHeart() {
     if (caughtHearts >= traits.length) {
-      setTimeout(() => goToStep('step-l2'), 500); // Selesai -> ke Level 2
+      setTimeout(() => goToStep('step-l2'), 500);
       return;
     }
     const area = document.getElementById('catch-area');
@@ -637,40 +651,40 @@
     spawnHeart();
   }
 
-  // --- LEVEL 2: JAWABAN MAKANAN (BAKSO) ---
+  // --- LEVEL 2: MAKANAN (BAKSO) ---
   function answerL2(isCorrect, btn) {
     if (isCorrect) {
       btn.classList.add('correct');
-      setTimeout(() => goToStep('step-l3'), 500); // Lanjut ke Level 3
+      setTimeout(() => goToStep('step-l3'), 500);
     } else {
       btn.classList.add('wrong');
       setTimeout(() => btn.classList.remove('wrong'), 500);
     }
   }
 
-  // --- LEVEL 3: JAWABAN MINUMAN (MATCHA LATTE) ---
+  // --- LEVEL 3: MINUMAN (MATCHA LATTE) ---
   function answerL3(isCorrect, btn) {
     if (isCorrect) {
       btn.classList.add('correct');
-      setTimeout(() => goToStep('step-l4'), 500); // Lanjut ke Level 4
+      setTimeout(() => goToStep('step-l4'), 500);
     } else {
       btn.classList.add('wrong');
       setTimeout(() => btn.classList.remove('wrong'), 500);
     }
   }
 
-  // --- LEVEL 4: JAWABAN NAMA KONTAK (BAE) ---
+  // --- LEVEL 4: KONTAK WA (BAE) ---
   function answerL4(isCorrect, btn) {
     if (isCorrect) {
       btn.classList.add('correct');
-      setTimeout(() => goToStep('step-l5'), 500); // Lanjut ke Level 5 (Memory Game)
+      setTimeout(() => goToStep('step-l5'), 500);
     } else {
       btn.classList.add('wrong');
       setTimeout(() => btn.classList.remove('wrong'), 500);
     }
   }
 
-  // --- LEVEL 5: LOVE MEMORY 12 KOTAK DENGAN TIMER & POPUP ---
+  // --- LEVEL 5: LOVE MEMORY 12 KOTAK ---
   const cardIcons = ['🧸', '🧸', '🍰', '🍰', '⭐', '⭐', '🎁', '🎁', '🌹', '🌹', '💌', '💌'];
   let flippedCards = [];
   let matchedPairs = 0;
@@ -764,18 +778,30 @@
     goToStep('step-final');
   }
 
-  // --- FINAL STEP: TYPEWRITER & KONFETI ---
-  const letterText = `Selamat ulang tahun, Faridatul Havida! ❤️\n\nSemoga di usia yang baru ini, setiap langkahmu selalu dipenuhi kebaikan, kebahagiaan yang tiada habisnya, dan kesehatan yang selalu terjaga.\n\nTerima kasih sudah selalu menjadi pribadi yang begitu baik, hangat, dan luar biasa. Semoga semua doa, harapan, serta impianmu terwujud satu per satu! 🌸✨`;
+  // --- FINAL STEP: PENULISAN SURAT DENGAN SPASI PASTI ---
+  const letterLines = [
+    "Selamat ulang tahun, Faridatul Havida! ❤️",
+    "",
+    "Semoga di usia yang baru ini, setiap langkahmu selalu dipenuhi kebaikan, kebahagiaan yang tiada habisnya, dan kesehatan yang selalu terjaga.",
+    "",
+    "Terima kasih sudah selalu menjadi pribadi yang begitu baik, hangat, dan luar biasa. Semoga semua doa, harapan, serta impianmu terwujud satu per satu! 🌸✨"
+  ];
+  const fullLetterText = letterLines.join("\n");
 
   function initFinalStep() {
     celebrateAgain();
     const target = document.getElementById('typing-text');
-    target.innerText = '';
+    target.textContent = '';
+    
     let idx = 0;
-    const interval = setInterval(() => {
-      target.innerText += letterText[idx];
+    if (window.typeInterval) clearInterval(window.typeInterval);
+
+    window.typeInterval = setInterval(() => {
+      target.textContent += fullLetterText.charAt(idx);
       idx++;
-      if (idx >= letterText.length) clearInterval(interval);
+      if (idx >= fullLetterText.length) {
+        clearInterval(window.typeInterval);
+      }
     }, 40);
   }
 
