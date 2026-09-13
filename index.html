@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Happy Birthday Faridatul Havida 🎉</title>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    :root {
+      --bg: #fff8f0;
+      --card: #ffffff;
+      --primary: #f08080;
+      --primary-dark: #e06c6c;
+      --accent: #fcd5ce;
+      --text: #4a4a4a;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      user-select: none;
+    }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 16px;
+    }
+    .phone-container {
+      width: 100%;
+      max-width: 380px;
+      background: var(--card);
+      border-radius: 28px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      padding: 24px;
+      min-height: 600px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid #f2e9e4;
+    }
+    .step {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+      animation: fadeIn 0.4s ease;
+    }
+    .step.active {
+      display: flex;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h2 {
+      font-size: 1.4rem;
+      margin-bottom: 6px;
+      color: #333;
+    }
+    p.subtitle {
+      font-size: 0.85rem;
+      color: #888;
+      margin-bottom: 20px;
+    }
+    .pin-display {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #f0e6e0;
+      transition: all 0.2s;
+    }
+    .dot.filled {
+      background: var(--primary);
+      transform: scale(1.1);
+    }
+    .keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      width: 100%;
+      max-width: 260px;
+    }
+    .key {
+      background: #fbf7f4;
+      border: 1px solid #fae6de;
+      border-radius: 18px;
+      padding: 16px 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #444;
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+      transition: transform 0.1s, background 0.1s;
+    }
+    .key:active {
+      transform: scale(0.93);
+      background: #fde8e1;
+    }
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 25px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(240, 128, 128, 0.35);
+      transition: transform 0.15s, background 0.15s;
+      width: 100%;
+      margin-top: 15px;
+    }
+    .btn:active {
+      transform: scale(0.96);
+      background: var(--primary-dark);
+    }
+    .profile-img {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid var(--accent);
+      margin-bottom: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+    }
+    /* Level 1 */
+    .catch-area {
+      width: 100%;
+      height: 250px;
+      background: #fff9f6;
+      border: 2px dashed #fcd5ce;
+      border-radius: 18px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 16px;
+      touch-action: none;
+    }
+    .floating-heart {
+      position: absolute;
+      font-size: 28px;
+      cursor: pointer;
+      user-select: none;
+      animation: pop 0.3s ease;
+      transform: translate(-50%, -50%);
+    }
+    @keyframes pop {
+      0% { transform: translate(-50%, -50%) scale(0); }
+      80% { transform: translate(-50%, -50%) scale(1.2); }
+      100% { transform: translate(-50%, -50%) scale(1); }
+    }
+    /* Level 2 */
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+    .quiz-btn {
+      background: #faf2ed;
+      border: 1px solid #fce3d8;
+      border-radius: 14px;
+      padding: 14px;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    .quiz-btn.correct {
+      background: #d4edda;
+      border-color: #c3e6cb;
+      color: #155724;
+    }
+    .quiz-btn.wrong {
+      background: #f8d7da;
+      border-color: #f5c6cb;
+      color: #721c24;
+    }
+    /* Level 3 */
+    .memory-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      width: 100%;
+      margin-bottom: 15px;
+    }
+    .memory-card {
+      aspect-ratio: 1;
+      background: #ffe3e0;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .memory-card.flipped {
+      background: #fff;
+      border: 2px solid #fcd5ce;
+    }
+    /* Gallery & Letter */
+    .gallery-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .polaroid {
+      background: white;
+      padding: 12px 12px 20px 12px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      border: 1px solid #eee;
+    }
+    .polaroid img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+    .polaroid-caption {
+      font-size: 0.8rem;
+      color: #777;
+      margin-top: 8px;
+    }
+    .letter-box {
+      background: #fffaf5;
+      border: 1px solid #fde7de;
+      border-radius: 14px;
+      padding: 16px;
+      text-align: left;
+      font-size: 0.9rem;
+      line-height: 1.6;
+      color: #555;
+      min-height: 120px;
+      white-space: pre-line;
+      margin-bottom: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="phone-container">
+
+  <div class="step active" id="step-pin">
+    <h2>Unlock Surprise 🔐</h2>
+    <p class="subtitle">Masukkan tanggal lahirmu (DDMMYYYY)</p>
+    <div class="pin-display">
+      <div class="dot" id="dot-0"></div>
+      <div class="dot" id="dot-1"></div>
+      <div class="dot" id="dot-2"></div>
+      <div class="dot" id="dot-3"></div>
+      <div class="dot" id="dot-4"></div>
+      <div class="dot" id="dot-5"></div>
+      <div class="dot" id="dot-6"></div>
+      <div class="dot" id="dot-7"></div>
+    </div>
+    <div class="keypad">
+      <div class="key" onclick="pressKey('1')">1</div>
+      <div class="key" onclick="pressKey('2')">2</div>
+      <div class="key" onclick="pressKey('3')">3</div>
+      <div class="key" onclick="pressKey('4')">4</div>
+      <div class="key" onclick="pressKey('5')">5</div>
+      <div class="key" onclick="pressKey('6')">6</div>
+      <div class="key" onclick="pressKey('7')">7</div>
+      <div class="key" onclick="pressKey('8')">8</div>
+      <div class="key" onclick="pressKey('9')">9</div>
+      <div class="key" onclick="deletePin()">⌫</div>
+      <div class="key" onclick="pressKey('0')">0</div>
+      <div class="key" onclick="checkPin()">✓</div>
+    </div>
+  </div>
+
+  <div class="step" id="step-welcome">
+    <img src="https://picsum.photos/300/300?random=1" class="profile-img" alt="Faridatul Havida">
+    <h2>Happy Birthday!<br>Faridatul Havida 🎂</h2>
+    <p class="subtitle" style="margin-top: 10px;">
+      Hari ini hari spesial kamu. Ada sedikit permainan kecil dan pesan hangat untukmu. Siap?
+    </p>
+    <button class="btn" onclick="goToStep('step-l1')">Mulai Permainan 💖</button>
+  </div>
+
+  <div class="step" id="step-l1">
+    <h2>Level 1: Tangkap Hati</h2>
+    <p class="subtitle">Sentuh 5 hati untuk membuka level berikutnya</p>
+    <div class="catch-area" id="catch-area"></div>
+    <div style="font-size: 0.9rem; font-weight: bold; color: var(--primary);">
+      Tertangkap: <span id="heart-count">0</span> / 5
+    </div>
+  </div>
+
+  <div class="step" id="step-l2">
+    <h2>Level 2: Seberapa Kenal?</h2>
+    <p class="subtitle" id="quiz-question">Pertanyaan kuis...</p>
+    <div class="quiz-options" id="quiz-options"></div>
+  </div>
+
+  <div class="step" id="step-l3">
+    <h2>Level 3: Love Memory</h2>
+    <p class="subtitle">Cocokkan semua pasangan ikon yang sama</p>
+    <div class="memory-grid" id="memory-grid"></div>
+    <p style="font-size: 0.85rem; color: #888;">Pasangan: <span id="pair-count">0</span> / 4</p>
+  </div>
+
+  <div class="step" id="step-final">
+    <h2>Happy Birthday! 🎁</h2>
+    <p class="subtitle">Untuk seseorang yang paling berharga</p>
+    
+    <div class="gallery-container">
+      <div class="polaroid">
+        <img src="https://picsum.photos/400/300?random=2" alt="Memory 1">
+        <div class="polaroid-caption">Senyum terbaik yang selalu bikin hari tenang ✨</div>
+      </div>
+      <div class="polaroid">
+        <img src="https://picsum.photos/400/300?random=3" alt="Memory 2">
+        <div class="polaroid-caption">Kenangan manis di hari yang tak terlupakan 🌸</div>
+      </div>
+
+      <div class="letter-box" id="typing-text"></div>
+      <button class="btn" onclick="celebrateAgain()">Rayakan Lagi 🎉</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  // State PIN: 13092002
+  const correctPin = "13092002";
+  let enteredPin = "";
+
+  function pressKey(num) {
+    if (enteredPin.length < 8) {
+      enteredPin += num;
+      updateDots();
+      if (enteredPin.length === 8) {
+        setTimeout(checkPin, 150);
+      }
+    }
+  }
+
+  function deletePin() {
+    enteredPin = enteredPin.slice(0, -1);
+    updateDots();
+  }
+
+  function updateDots() {
+    for (let i = 0; i < 8; i++) {
+      const dot = document.getElementById(`dot-${i}`);
+      if (i < enteredPin.length) {
+        dot.classList.add('filled');
+      } else {
+        dot.classList.remove('filled');
+      }
+    }
+  }
+
+  function checkPin() {
+    if (enteredPin === correctPin) {
+      goToStep('step-welcome');
+    } else {
+      alert("Tanggal lahir salah! Masukkan dengan format: 13092002");
+      enteredPin = "";
+      updateDots();
+    }
+  }
+
+  function goToStep(stepId) {
+    document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+    document.getElementById(stepId).classList.add('active');
+
+    if (stepId === 'step-l1') initLevel1();
+    if (stepId === 'step-l2') initLevel2();
+    if (stepId === 'step-l3') initLevel3();
+    if (stepId === 'step-final') initFinalStep();
+  }
+
+  // LEVEL 1: Tangkap Hati
+  let caughtHearts = 0;
+  function initLevel1() {
+    caughtHearts = 0;
+    document.getElementById('heart-count').innerText = caughtHearts;
+    spawnHeart();
+  }
+
+  function spawnHeart() {
+    if (caughtHearts >= 5) {
+      setTimeout(() => goToStep('step-l2'), 500);
+      return;
+    }
+    const area = document.getElementById('catch-area');
+    area.innerHTML = '';
+    const heart = document.createElement('div');
+    heart.className = 'floating-heart';
+    heart.innerText = '💖';
+    heart.style.left = (Math.random() * 75 + 10) + '%';
+    heart.style.top = (Math.random() * 75 + 10) + '%';
+    heart.onclick = () => {
+      caughtHearts++;
+      document.getElementById('heart-count').innerText = caughtHearts;
+      spawnHeart();
+    };
+    area.appendChild(heart);
+  }
+
+  // LEVEL 2: Kuis
+  const quizData = [
+    {
+      q: "Apa minuman favorit yang paling sering dipesan saat santai?",
+      options: ["Es Teh Manis", "Kopi Susu", "Matcha Latte", "Jus Alpukat"],
+      correct: 2
+    }
+  ];
+
+  function initLevel2() {
+    const q = quizData[0];
+    document.getElementById('quiz-question').innerText = q.q;
+    const optContainer = document.getElementById('quiz-options');
+    optContainer.innerHTML = '';
+
+    q.options.forEach((opt, idx) => {
+      const btn = document.createElement('div');
+      btn.className = 'quiz-btn';
+      btn.innerText = opt;
+      btn.onclick = () => {
+        if (idx === q.correct) {
+          btn.classList.add('correct');
+          setTimeout(() => goToStep('step-l3'), 600);
+        } else {
+          btn.classList.add('wrong');
+          setTimeout(() => btn.classList.remove('wrong'), 500);
+        }
+      };
+      optContainer.appendChild(btn);
+    });
+  }
+
+  // LEVEL 3: Memory Cards
+  const emojis = ['🧸', '🧸', '🍰', '🍰', '⭐', '⭐', '🎁', '🎁'];
+  let flipped = [];
+  let matchedCount = 0;
+
+  function initLevel3() {
+    const grid = document.getElementById('memory-grid');
+    grid.innerHTML = '';
+    flipped = [];
+    matchedCount = 0;
+    document.getElementById('pair-count').innerText = 0;
+
+    const shuffled = [...emojis].sort(() => Math.random() - 0.5);
+
+    shuffled.forEach((emoji, idx) => {
+      const card = document.createElement('div');
+      card.className = 'memory-card';
+      card.dataset.emoji = emoji;
+      card.dataset.index = idx;
+      card.innerText = '❓';
+
+      card.onclick = () => {
+        if (card.classList.contains('flipped') || flipped.length === 2) return;
+        card.classList.add('flipped');
+        card.innerText = emoji;
+        flipped.push(card);
+
+        if (flipped.length === 2) {
+          if (flipped[0].dataset.emoji === flipped[1].dataset.emoji) {
+            matchedCount++;
+            document.getElementById('pair-count').innerText = matchedCount;
+            flipped = [];
+            if (matchedCount === 4) {
+              setTimeout(() => goToStep('step-final'), 700);
+            }
+          } else {
+            setTimeout(() => {
+              flipped.forEach(c => {
+                c.classList.remove('flipped');
+                c.innerText = '❓';
+              });
+              flipped = [];
+            }, 600);
+          }
+        }
+      };
+      grid.appendChild(card);
+    });
+  }
+
+  // STEP FINAL: Typewriter & Confetti
+  const letterText = `Selamat ulang tahun, Faridatul Havida! ❤️\n\nSemoga di usia yang baru ini, setiap langkahmu dipenuhi kebaikan, kebahagiaan yang berlimpah, dan kesehatan yang selalu terjaga.\n\nTerima kasih sudah selalu menjadi pribadi yang hangat dan luar biasa. Semoga semua harapan dan impianmu terwujud satu per satu! 🌸✨`;
+
+  function initFinalStep() {
+    celebrateAgain();
+    const target = document.getElementById('typing-text');
+    target.innerText = '';
+    let idx = 0;
+    const interval = setInterval(() => {
+      target.innerText += letterText[idx];
+      idx++;
+      if (idx >= letterText.length) clearInterval(interval);
+    }, 40);
+  }
+
+  function celebrateAgain() {
+    confetti({
+      particleCount: 80,
+      spread: 70,
+      origin: { y: 0.6 }
+    });
+  }
+</script>
+
+</body>
+</html>
